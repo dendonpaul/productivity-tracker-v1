@@ -16,6 +16,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/", ActivityRouter);
 
-app.listen(5001, () => {
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
   console.log("The server is running at 5001");
 });
