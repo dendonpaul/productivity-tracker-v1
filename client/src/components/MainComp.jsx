@@ -13,10 +13,10 @@ const MainComp = () => {
     time: "",
   });
   const [activities, setActivities] = useState([]);
-
+  const len = activities != undefined && activities.length;
   //useEffect to fetch all the activities with a dependency on the [values]
   useEffect(() => {
-    const allActivities = axios
+    axios
       .get(`${apiURL}/activity/allactivities`)
       .then((response) => setActivities(response.data));
   }, [activities]);
@@ -73,10 +73,11 @@ const MainComp = () => {
           <h2 className="text-2xl text-left text-white font-bold mb-3">
             All Activities
           </h2>
-          <ul className="text-left text-lg font-semibold">
-            {activities.map((element, index) => (
-              <Activities data={element} key={index} id={index} />
-            ))}
+          <ul className="flex flex-col space-y-2 text-left text-lg font-semibold">
+            {activities &&
+              activities.map((element, index) => (
+                <Activities data={element} key={index} id={index} />
+              ))}
           </ul>
         </div>
       </div>
