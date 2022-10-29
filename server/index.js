@@ -11,7 +11,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 Connection();
-
+app.get("/", (req, res) => {
+  res.send("This is the API site for Productivity Tracker V1");
+});
 app.use("/api/", ActivityRouter);
 
 app.listen(5001, () => {
