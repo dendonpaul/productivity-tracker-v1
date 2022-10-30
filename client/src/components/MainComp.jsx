@@ -13,13 +13,13 @@ const MainComp = () => {
     time: "",
   });
   const [activities, setActivities] = useState([]);
-  const len = activities != undefined && activities.length;
+  const [updated, setUpdated] = useState(false);
   //useEffect to fetch all the activities with a dependency on the [values]
   useEffect(() => {
     axios
       .get(`${apiURL}/activity/allactivities`)
       .then((response) => setActivities(response.data));
-  }, [activities]);
+  }, [updated]);
 
   //form on change function
   const onChange = (e) => {
@@ -30,12 +30,13 @@ const MainComp = () => {
   //function to trigger on save button click
   const onSave = async (e) => {
     e.preventDefault();
+    setUpdated(false);
     axios
       .post(`${apiURL}/activity/add`, {
         name: values.activity,
         time: values.time,
       })
-      .then((response) => console.log(response));
+      .then((response) => setUpdated(true));
   };
   return (
     <div className="App">
