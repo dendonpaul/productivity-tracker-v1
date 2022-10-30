@@ -38,6 +38,20 @@ const MainComp = () => {
       })
       .then((response) => setUpdated(true));
   };
+
+  //Delete function
+  const deleteAct = (e) => {
+    //show alert when clicking delet button
+    if (window.confirm(`Are you sure to delete ${e.name} from the list`)) {
+      setUpdated(true);
+      axios
+        .delete(`${apiURL}/activity/${e._id}`)
+        .then((response) => console.log(response))
+        .then(() => setUpdated(false));
+    } else {
+      return;
+    }
+  };
   return (
     <div className="App">
       <div className="max-w-3xl mx-auto flex-col items-center space-y-10">
@@ -77,7 +91,12 @@ const MainComp = () => {
           <ul className="flex flex-col space-y-2 text-left text-lg font-semibold">
             {activities &&
               activities.map((element, index) => (
-                <Activities data={element} key={index} id={index} />
+                <Activities
+                  data={element}
+                  key={index}
+                  id={index}
+                  deleteAct={deleteAct}
+                />
               ))}
           </ul>
         </div>

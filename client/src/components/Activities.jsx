@@ -1,10 +1,11 @@
+import axios from "axios";
 import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 
-const Activities = ({ data, id }) => {
-  const deleteAct = (e) => {
-    e.preventDefault();
-    console.log("deletes");
-  };
+const Activities = ({ data, id, deleteAct }) => {
+  //state to add dep for useEffect
+  const [update, setUpdated] = useState(false);
   return (
     <>
       <li className="flex justify-between">
@@ -12,7 +13,7 @@ const Activities = ({ data, id }) => {
     `}{" "}
         <button
           className="bg-red-500 text-white text-sm py-1 px-2"
-          onClick={deleteAct}
+          onClick={() => deleteAct(data)}
         >
           Delete
         </button>
