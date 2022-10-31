@@ -12,7 +12,7 @@ const Activities = ({ data, id, deleteAct }) => {
         {`${id + 1}. ${data.name} - ${data.time} 
     `}{" "}
         <button
-          className="bg-red-500 text-white text-sm py-1 px-2"
+          className="bg-red-500 text-white text-xs py-1 px-2 rounded "
           onClick={() => deleteAct(data)}
         >
           Delete

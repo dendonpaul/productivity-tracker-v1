@@ -44,10 +44,7 @@ const MainComp = () => {
     //show alert when clicking delet button
     if (window.confirm(`Are you sure to delete ${e.name} from the list`)) {
       setUpdated(true);
-      axios
-        .delete(`${apiURL}/activity/${e._id}`)
-        .then((response) => console.log(response))
-        .then(() => setUpdated(false));
+      axios.delete(`${apiURL}/activity/${e._id}`).then(() => setUpdated(false));
     } else {
       return;
     }
