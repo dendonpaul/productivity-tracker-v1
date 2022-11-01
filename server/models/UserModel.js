@@ -17,6 +17,10 @@ const UserSchema = new mongoose.Schema(
       maxlength: 16,
       unique: true,
     },
+    password: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -37,4 +41,3 @@ const UserSchema = new mongoose.Schema(
 const UserModel = mongoose.model("user", UserSchema);
 
 module.exports = UserModel;
-s;
