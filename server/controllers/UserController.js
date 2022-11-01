@@ -34,7 +34,6 @@ const addUser = async (req, res) => {
     res.status(401).json(error);
   }
 };
-
 //delete user
 const deleteUser = (req, res) => {
   const _id = req.params.id;
@@ -50,10 +49,22 @@ const deleteUser = (req, res) => {
       .json({ message: "Error. could not delete user (catch error)" });
   }
 };
-
 //update user
-const updateUser = () => {};
-
+const updateUser = async (req, res) => {
+  const { firstname, lastname, mobile, password } = req.body;
+  const _id = req.params.id;
+  try {
+    await UserModel.findOneAndUpdate(
+      { _id: _id },
+      { firstname, lastname, mobile, password },
+      { runValidators: true }
+    ).then((user) =>
+      res.status(200).json({ message: "User Updated", data: user })
+    );
+  } catch (error) {
+    res.status(401).json({ message: error });
+  }
+};
 //fetch all users
 const getAllUsers = (req, res) => {
   try {
@@ -66,7 +77,6 @@ const getAllUsers = (req, res) => {
     res.status(401).json({ message: "Error. Data could not be fetched" });
   }
 };
-
 //fetch single user
 const getUser = async (req, res) => {
   const _id = req.params.id;
