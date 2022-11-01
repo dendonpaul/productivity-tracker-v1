@@ -68,7 +68,22 @@ const getAllUsers = (req, res) => {
 };
 
 //fetch single user
-const getUser = () => {};
+const getUser = async (req, res) => {
+  const _id = req.params.id;
+  try {
+    //check if the user exists
+    const userexists = await UserModel.exists({ _id: _id });
+    if (userexists) {
+      const user = await UserModel.findOne({ _id: _id });
+      delete user._doc.password;
+      res.status(200).json(user);
+    } else {
+      return res.status(201).json({ message: "Error. user does not exists" });
+    }
+  } catch (error) {
+    res.status(400).json({ message: "Error. could not fetch user" });
+  }
+};
 
 module.exports = {
   addUser,
