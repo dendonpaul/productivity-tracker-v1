@@ -3,6 +3,7 @@ import { useState } from "react";
 import Activities from "./Activities";
 import axios from "axios";
 import { useEffect } from "react";
+import Header from "./Header";
 
 const MainComp = () => {
   //get api url from the env file
@@ -51,6 +52,7 @@ const MainComp = () => {
   };
   return (
     <div className="App">
+      <Header />
       <div className="max-w-3xl mx-auto flex-col items-center space-y-10">
         <div className="w-full mt-10 font-bold text-5xl text-white">
           Productivity Tracker
