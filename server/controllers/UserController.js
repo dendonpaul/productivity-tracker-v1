@@ -36,13 +36,36 @@ const addUser = async (req, res) => {
 };
 
 //delete user
-const deleteUser = () => {};
+const deleteUser = (req, res) => {
+  const _id = req.params.id;
+  try {
+    UserModel.deleteOne({ _id }).then((response) =>
+      res
+        .status(200)
+        .json({ message: "User Deleted Succesfully", data: response })
+    );
+  } catch (error) {
+    res
+      .status(401)
+      .json({ message: "Error. could not delete user (catch error)" });
+  }
+};
 
 //update user
 const updateUser = () => {};
 
 //fetch all users
-const getAllUsers = () => {};
+const getAllUsers = (req, res) => {
+  try {
+    const users = UserModel.find({})
+      .sort("username")
+      .then((response) => {
+        res.status(200).json({ message: "All users fetched", data: response });
+      });
+  } catch (error) {
+    res.status(401).json({ message: "Error. Data could not be fetched" });
+  }
+};
 
 //fetch single user
 const getUser = () => {};
