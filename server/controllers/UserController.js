@@ -1,4 +1,6 @@
 const UserModel = require("../models/UserModel");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 //add user
 const addUser = async (req, res) => {
@@ -21,16 +23,26 @@ const addUser = async (req, res) => {
         .status(301)
         .json({ message: "Username already exists.Try another" });
 
-    //If both conditions are false, save the new user
-    const usersaved = await user.save();
-    //return error if user save failed
-    if (!usersaved) {
-      return res.status(301).json({ message: "Error occured. User not saved" });
-    } else {
-      delete usersaved._doc.password;
-      return res
-        .status(200)
-        .json({ message: "User Saved Successfully", data: usersaved });
+    //Bcrypt password encryption
+    try {
+      const hash = await bcrypt.hash(password, saltRounds);
+      user.password = hash;
+
+      //If both conditions are false, save the new user.after creating hash
+      const usersaved = await user.save();
+      //return error if user save failed
+      if (!usersaved) {
+        return res
+          .status(301)
+          .json({ message: "Error occured. User not saved" });
+      } else {
+        delete usersaved._doc.password;
+        return res
+          .status(200)
+          .json({ message: "User Saved Successfully", data: usersaved });
+      }
+    } catch (err) {
+      console.log(err);
     }
   } catch (error) {
     res.status(401).json(error);
