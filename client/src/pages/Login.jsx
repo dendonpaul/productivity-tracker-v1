@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import { useState } from "react";
 import Spinner from "../components/Spinner";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const apiURL = process.env.REACT_APP_BACKEND_USER_URL;
@@ -18,8 +19,13 @@ const Login = () => {
   };
   const onSubmit = async (e) => {
     e.preventDefault();
-
-    await axios.post(`${apiURL}/login`, values).then((res) => console.log(res));
+    try {
+      await axios
+        .post(`${apiURL}/login`, values)
+        .then((result) => toast(result.data.message));
+    } catch (error) {
+      toast.error(error);
+    }
   };
   if (loading) return <Spinner />;
   return (

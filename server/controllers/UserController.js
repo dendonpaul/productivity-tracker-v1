@@ -113,15 +113,14 @@ const loginUser = async (req, res) => {
   const { username, password } = req.body;
   //check if the username exists in DB
   const userExists = await UserModel.exists({ username: username });
-
-  if (userExists) {
+  if (userExists != null) {
     const user = await UserModel.findOne({ username: username });
     bcrypt.compare(password, user.password).then((result) => {
       if (result) return res.status(200).json({ message: "Valid Credentials" });
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Invalid credentials" });
     });
   } else {
-    return res.status(401).json({ message: "Please enter valid credentials" });
+    return res.json({ message: "Please enter valid credentials" });
   }
 };
 
