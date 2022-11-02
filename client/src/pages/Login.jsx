@@ -2,8 +2,10 @@ import React from "react";
 import Header from "../components/Header";
 import { useState } from "react";
 import Spinner from "../components/Spinner";
+import axios from "axios";
 
 const Login = () => {
+  const apiURL = process.env.REACT_APP_BACKEND_USER_URL;
   const [values, setValues] = useState({
     username: "",
     password: "",
@@ -14,8 +16,10 @@ const Login = () => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
   };
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+
+    await axios.post(`${apiURL}/login`, values).then((res) => console.log(res));
   };
   if (loading) return <Spinner />;
   return (
