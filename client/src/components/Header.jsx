@@ -5,7 +5,6 @@ const Header = () => {
   const location = useLocation();
   const pathMatch = (path) => {
     if (path === location.pathname) {
-      console.log(location.pathname);
       return true;
     }
   };

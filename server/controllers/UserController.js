@@ -28,7 +28,9 @@ const addUser = async (req, res) => {
       return res.status(301).json({ message: "Error occured. User not saved" });
     } else {
       delete usersaved._doc.password;
-      return res.status(200).json(usersaved);
+      return res
+        .status(200)
+        .json({ message: "User Saved Successfully", data: usersaved });
     }
   } catch (error) {
     res.status(401).json(error);
