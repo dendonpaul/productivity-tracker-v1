@@ -26,7 +26,16 @@ const Header = () => {
                 Home
               </li>
             </Link>
-            <li>Login</li>
+            <Link
+              className={`cursor-pointer ${
+                pathMatch("/login") &&
+                "text-black bg-white border-b-red-500 rounded px-2"
+              }`}
+              to="/login"
+            >
+              <li>Login</li>
+            </Link>
+
             <Link to="/register">
               <li
                 className={`cursor-pointer ${

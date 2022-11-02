@@ -3,8 +3,11 @@ import Header from "../components/Header";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Spinner from "../components/Spinner";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     firstname: "",
     lastname: "",
@@ -14,6 +17,8 @@ const Register = () => {
     cpassword: "",
     username: "",
   });
+
+  const [loading, setLoading] = useState(false);
   const validationErrors = [];
   const userAPIUrl = process.env.REACT_APP_BACKEND_USER_URL;
 
@@ -29,6 +34,7 @@ const Register = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
+    setLoading(true);
 
     //validate fields
     if (values.firstname === "") validationErrors.push("Firstname Required");
@@ -53,6 +59,7 @@ const Register = () => {
     validationErrors.length > 0 &&
       validationErrors.map((error) => {
         setDisabled(false);
+        setLoading(false);
         return toast.error(error);
       });
 
@@ -62,13 +69,17 @@ const Register = () => {
         await axios.post(`${userAPIUrl}/adduser`, values).then((response) => {
           toast.success(response.data.message);
           setDisabled(false);
+          setLoading(false);
+          navigate("/login");
         });
       } catch (error) {
         toast.error(error.response.data.message);
         setDisabled(false);
+        setLoading(false);
       }
     }
   };
+  if (loading) return <Spinner />;
 
   return (
     <div className="App">
@@ -144,7 +155,6 @@ const Register = () => {
               onChange={onChange}
             />
             <button
-              disabled={disabled}
               type="button"
               onClick={onSubmit}
               className="bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg rounded py-3 text-white text-xl"
