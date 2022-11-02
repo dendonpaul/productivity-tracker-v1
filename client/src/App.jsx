@@ -16,7 +16,7 @@ function App() {
       </Router>
       {/* Toast */}
       <ToastContainer
-        position="top-right"
+        position="bottom-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop
@@ -24,11 +24,9 @@ function App() {
         rtl={false}
         pauseOnFocusLoss
         draggable
-        pauseOnHover
-        theme="light"
+        pauseOnHover={false}
+        theme="colored"
       />
-      {/* Same as */}
-      <ToastContainer />
     </>
   );
 }

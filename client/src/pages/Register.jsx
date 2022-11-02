@@ -50,14 +50,14 @@ const Register = () => {
       validationErrors.push("Passwords do not match");
 
     //Check if validation error are available. sent toast if true
-    validationErrors !== "" &&
+    validationErrors.length > 0 &&
       validationErrors.map((error) => {
         setDisabled(false);
         return toast.error(error);
       });
 
     //submit form if validations are corrects
-    if (validationErrors.length === 0) {
+    if (validationErrors.length <= 0) {
       try {
         await axios.post(`${userAPIUrl}/adduser`, values).then((response) => {
           toast.success(response.data.message);
