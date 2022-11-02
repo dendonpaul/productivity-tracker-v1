@@ -1,6 +1,8 @@
 const UserModel = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv").config();
 
 //add user
 const addUser = async (req, res) => {
@@ -115,9 +117,34 @@ const loginUser = async (req, res) => {
   const userExists = await UserModel.exists({ username: username });
   if (userExists != null) {
     const user = await UserModel.findOne({ username: username });
-    bcrypt.compare(password, user.password).then((result) => {
-      if (result) return res.status(200).json({ message: "Valid Credentials" });
-      return res.status(401).json({ message: "Invalid credentials" });
+    await bcrypt.compare(password, user.password).then((result) => {
+      if (result) {
+        //Json token generator
+        const secret_key = process.env.SECRET_KEY;
+        const token = jwt.sign(
+          {
+            email: user.email,
+            userId: user._id,
+            username: user.username,
+          },
+          secret_key,
+          { expiresIn: "1d" },
+          function (err, token) {
+            if (err === null) {
+              res
+                .status(200)
+                .json({
+                  token: token,
+                  expiresIn: 3600,
+                  userId: user._id,
+                  message: "User Validated",
+                });
+            }
+          }
+        );
+      } else {
+        res.status(401).json({ message: "Invalid credentials" });
+      }
     });
   } else {
     return res.json({ message: "Please enter valid credentials" });
