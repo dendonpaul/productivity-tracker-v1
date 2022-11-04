@@ -13,13 +13,26 @@ const MainComp = () => {
     activity: "",
     time: "",
   });
-  const [activities, setActivities] = useState([]);
+  const [activities, setActivities] = useState();
   const [updated, setUpdated] = useState(false);
   //useEffect to fetch all the activities with a dependency on the [values]
   useEffect(() => {
-    axios
-      .get(`${apiURL}/activity/allactivities`)
-      .then((response) => setActivities(response.data));
+    const token = localStorage.getItem("token");
+    const fetchData = async () => {
+      await axios
+        .get(`${apiURL}/activity/allactivities`, {
+          headers: { authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          if (response.data === "Invalid Token") {
+            setActivities(undefined);
+          } else {
+            setActivities(response.data);
+          }
+        });
+    };
+
+    fetchData();
   }, [updated]);
 
   //form on change function
@@ -88,15 +101,19 @@ const MainComp = () => {
             All Activities
           </h2>
           <ul className="flex flex-col space-y-2 text-left text-lg font-semibold">
-            {activities &&
-              activities.map((element, index) => (
-                <Activities
-                  data={element}
-                  key={index}
-                  id={index}
-                  deleteAct={deleteAct}
-                />
-              ))}
+            {console.log(activities)}
+            {activities !== undefined
+              ? activities.length > 0
+                ? activities.map((element, index) => (
+                    <Activities
+                      data={element}
+                      key={index}
+                      id={index}
+                      deleteAct={deleteAct}
+                    />
+                  ))
+                : "No Activities Added"
+              : "Please login"}
           </ul>
         </div>
       </div>

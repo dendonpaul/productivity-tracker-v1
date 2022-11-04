@@ -70,6 +70,7 @@ const Register = () => {
           toast.success(response.data.message);
           setDisabled(false);
           setLoading(false);
+          localStorage.set("token", response.data.token);
           navigate("/login");
         });
       } catch (error) {

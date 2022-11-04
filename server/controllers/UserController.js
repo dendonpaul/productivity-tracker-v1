@@ -39,9 +39,12 @@ const addUser = async (req, res) => {
           .json({ message: "Error occured. User not saved" });
       } else {
         delete usersaved._doc.password;
-        return res
-          .status(200)
-          .json({ message: "User Saved Successfully", data: usersaved });
+
+        return res.status(200).json({
+          message: "User Saved Successfully",
+          data: usersaved,
+          token: tokenGenerator(usersaved._id),
+        });
       }
     } catch (err) {
       console.log(err);
@@ -119,29 +122,8 @@ const loginUser = async (req, res) => {
     const user = await UserModel.findOne({ username: username });
     await bcrypt.compare(password, user.password).then((result) => {
       if (result) {
-        //Json token generator
-        const secret_key = process.env.SECRET_KEY;
-        const token = jwt.sign(
-          {
-            email: user.email,
-            userId: user._id,
-            username: user.username,
-          },
-          secret_key,
-          { expiresIn: "1d" },
-          function (err, token) {
-            if (err === null) {
-              res
-                .status(200)
-                .json({
-                  token: token,
-                  expiresIn: 3600,
-                  userId: user._id,
-                  message: "User Validated",
-                });
-            }
-          }
-        );
+        const token = tokenGenerator(user._id);
+        res.status(200).json({ message: "User Validated", token: token });
       } else {
         res.status(401).json({ message: "Invalid credentials" });
       }
@@ -151,6 +133,24 @@ const loginUser = async (req, res) => {
   }
 };
 
+const tokenGenerator = (id) => {
+  //Json token generator
+  const secret_key = process.env.SECRET_KEY;
+  return jwt.sign(
+    {
+      id: id,
+    },
+    secret_key,
+    { expiresIn: "1d" }
+  );
+};
+
+//Delete this after testing
+const getMe = async (req, res) => {
+  const { _id, email, username } = req.user;
+  res.status(200).json({ email, username });
+};
+
 module.exports = {
   addUser,
   deleteUser,
@@ -158,4 +158,5 @@ module.exports = {
   getAllUsers,
   getUser,
   loginUser,
+  getMe,
 };
