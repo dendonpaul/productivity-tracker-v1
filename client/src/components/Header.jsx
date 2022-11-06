@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
+  const token = localStorage.getItem("token");
   const location = useLocation();
   const pathMatch = (path) => {
     if (path === location.pathname) {
@@ -26,26 +27,41 @@ const Header = () => {
                 Home
               </li>
             </Link>
-            <Link
-              className={`cursor-pointer ${
-                pathMatch("/login") &&
-                "text-black bg-white border-b-red-500 rounded px-2"
-              }`}
-              to="/login"
-            >
-              <li>Login</li>
-            </Link>
+            {!token ? (
+              <>
+                <Link
+                  className={`cursor-pointer ${
+                    pathMatch("/login") &&
+                    "text-black bg-white border-b-red-500 rounded px-2"
+                  }`}
+                  to="/login"
+                >
+                  <li>Login</li>
+                </Link>
 
-            <Link to="/register">
-              <li
-                className={`cursor-pointer ${
-                  pathMatch("/register") &&
-                  "text-black bg-white border-b-red-500 rounded px-2"
-                }`}
-              >
-                Register
-              </li>
-            </Link>
+                <Link to="/register">
+                  <li
+                    className={`cursor-pointer ${
+                      pathMatch("/register") &&
+                      "text-black bg-white border-b-red-500 rounded px-2"
+                    }`}
+                  >
+                    Register
+                  </li>
+                </Link>
+              </>
+            ) : (
+              <Link to="/logout">
+                <li
+                  className={`cursor-pointer ${
+                    pathMatch("/logout") &&
+                    "text-black bg-white border-b-red-500 rounded px-2"
+                  }`}
+                >
+                  Logout
+                </li>
+              </Link>
+            )}
           </ul>
         </div>
       </div>
