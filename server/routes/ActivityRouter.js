@@ -9,7 +9,11 @@ router.get(
   ActivityController.allActivities
 );
 router.get("/activity/:id", ActivityController.getActivity);
-router.post("/activity/add", ActivityController.addActivity);
+router.post(
+  "/activity/add",
+  AuthController.tokenVerify,
+  ActivityController.addActivity
+);
 router.delete("/activity/:id", ActivityController.delActivity);
 router.put("/activity/:id", ActivityController.updateActivty);
 

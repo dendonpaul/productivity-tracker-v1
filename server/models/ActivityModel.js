@@ -9,6 +9,11 @@ const ActivitySchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
+    required: true,
+  },
 });
 
 const ActivityModel = mongoose.model("activity", ActivitySchema);

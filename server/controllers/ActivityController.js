@@ -1,8 +1,10 @@
+const { response } = require("express");
 const Activity = require("../models/ActivityModel");
 
 const allActivities = async (req, res) => {
+  const _id = req.user._id.toString();
   try {
-    const activities = await Activity.find();
+    const activities = await Activity.find({ userId: _id });
     res.status(200).json(activities);
   } catch (error) {
     console.log(error);
@@ -31,7 +33,13 @@ const getActivity = async (req, res) => {
 };
 
 const addActivity = async (req, res) => {
-  const activity = new Activity(req.body);
+  const { name, time } = req.body;
+  const userId = req.user._id;
+  const activity = new Activity({
+    name,
+    time,
+    userId,
+  });
   try {
     const newActivity = await activity.save();
     res.status(200).json(newActivity);

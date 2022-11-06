@@ -13,7 +13,7 @@ const MainComp = () => {
     activity: "",
     time: "",
   });
-  const [activities, setActivities] = useState();
+  const [activities, setActivities] = useState([]);
   const [updated, setUpdated] = useState(false);
   //useEffect to fetch all the activities with a dependency on the [values]
   useEffect(() => {
@@ -45,11 +45,16 @@ const MainComp = () => {
   const onSave = async (e) => {
     e.preventDefault();
     setUpdated(false);
+    const token = localStorage.getItem("token");
     axios
-      .post(`${apiURL}/activity/add`, {
-        name: values.activity,
-        time: values.time,
-      })
+      .post(
+        `${apiURL}/activity/add`,
+        {
+          name: values.activity,
+          time: values.time,
+        },
+        { headers: { authorization: `Bearer ${token}` } }
+      )
       .then((response) => setUpdated(true));
   };
 
