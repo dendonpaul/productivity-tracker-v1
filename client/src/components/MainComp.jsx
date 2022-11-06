@@ -70,52 +70,55 @@ const MainComp = () => {
         <div className="w-full mt-10 font-bold text-5xl text-white">
           Productivity Tracker
         </div>
-        <div className="w-full form flex space-x-3 justify-center">
-          <input
-            type="text"
-            name="activity"
-            id="activity"
-            value={values.activity}
-            placeholder="Activity Name"
-            className="w-full text-xl px-2 py-4 focus:outline focus:outline-1 focus:outline-red-400 "
-            onChange={onChange}
-          />
-          <input
-            type="number"
-            name="time"
-            id="time"
-            value={values.time}
-            placeholder="Time Taken (hrs)"
-            className="w-full text-xl px-2 py-4 focus:outline focus:outline-1 focus:outline-red-400"
-            onChange={onChange}
-          />
-        </div>
-        <button
-          onClick={onSave}
-          className="bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg px-5 py-4 w-full text-white font-bold text-lg focus:outline-0 transition duration-200 ease-in-out"
-        >
-          Save
-        </button>
-        <div className="">
-          <h2 className="text-2xl text-left text-white font-bold mb-3">
-            All Activities
-          </h2>
-          <ul className="flex flex-col space-y-2 text-left text-lg font-semibold">
-            {console.log(activities)}
-            {activities !== undefined
-              ? activities.length > 0
-                ? activities.map((element, index) => (
-                    <Activities
-                      data={element}
-                      key={index}
-                      id={index}
-                      deleteAct={deleteAct}
-                    />
-                  ))
-                : "No Activities Added"
-              : "Please login"}
-          </ul>
-        </div>
+        {activities !== undefined ? (
+          <>
+            <div className="w-full form flex space-x-3 justify-center">
+              <input
+                type="text"
+                name="activity"
+                id="activity"
+                value={values.activity}
+                placeholder="Activity Name"
+                className="w-full text-xl px-2 py-4 focus:outline focus:outline-1 focus:outline-red-400 "
+                onChange={onChange}
+              />
+              <input
+                type="number"
+                name="time"
+                id="time"
+                value={values.time}
+                placeholder="Time Taken (hrs)"
+                className="w-full text-xl px-2 py-4 focus:outline focus:outline-1 focus:outline-red-400"
+                onChange={onChange}
+              />
+            </div>
+            <button
+              onClick={onSave}
+              className="bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg px-5 py-4 w-full text-white font-bold text-lg focus:outline-0 transition duration-200 ease-in-out"
+            >
+              Save
+            </button>
+            <div className="">
+              <h2 className="text-2xl text-left text-white font-bold mb-3">
+                All Activities
+              </h2>
+              <ul className="flex flex-col space-y-2 text-left text-lg font-semibold">
+                {activities.length > 0
+                  ? activities.map((element, index) => (
+                      <Activities
+                        data={element}
+                        key={index}
+                        id={index}
+                        deleteAct={deleteAct}
+                      />
+                    ))
+                  : "No Activities Added"}
+              </ul>
+            </div>
+          </>
+        ) : (
+          "Please login to continue"
+        )}
       </div>
     </div>
   );
