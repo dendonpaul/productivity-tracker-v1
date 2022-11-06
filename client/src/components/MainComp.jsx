@@ -59,11 +59,16 @@ const MainComp = () => {
   };
 
   //Delete function
-  const deleteAct = (e) => {
+  const deleteAct = async (e) => {
+    const token = localStorage.getItem("token");
     //show alert when clicking delet button
     if (window.confirm(`Are you sure to delete ${e.name} from the list`)) {
       setUpdated(true);
-      axios.delete(`${apiURL}/activity/${e._id}`).then(() => setUpdated(false));
+      await axios
+        .delete(`${apiURL}/activity/${e._id}`, {
+          headers: { authorization: `Bearer ${token}` },
+        })
+        .then(() => setUpdated(false));
     } else {
       return;
     }

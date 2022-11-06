@@ -13,6 +13,7 @@ const allActivities = async (req, res) => {
 
 const delActivity = async (req, res) => {
   const { id } = req.params;
+  const userId = req.user._id.toString();
   try {
     const response = await Activity.deleteOne({ _id: id });
     res.status(201).json(response);

@@ -8,13 +8,21 @@ router.get(
   AuthController.tokenVerify,
   ActivityController.allActivities
 );
-router.get("/activity/:id", ActivityController.getActivity);
+router.get(
+  "/activity/:id",
+  AuthController.tokenVerify,
+  ActivityController.getActivity
+);
 router.post(
   "/activity/add",
   AuthController.tokenVerify,
   ActivityController.addActivity
 );
-router.delete("/activity/:id", ActivityController.delActivity);
+router.delete(
+  "/activity/:id",
+  AuthController.tokenVerify,
+  ActivityController.delActivity
+);
 router.put("/activity/:id", ActivityController.updateActivty);
 
 module.exports = router;
