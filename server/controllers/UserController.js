@@ -129,7 +129,7 @@ const loginUser = async (req, res) => {
       }
     });
   } else {
-    return res.json({ message: "Please enter valid credentials" });
+    return res.status(401).json({ message: "Please enter valid credentials" });
   }
 };
 

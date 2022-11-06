@@ -23,13 +23,14 @@ const Login = () => {
     e.preventDefault();
     try {
       await axios.post(`${apiURL}/login`, values).then((result) => {
+        console.log(result);
         setLoading(true);
         toast.success(result.data.message);
         localStorage.setItem("token", result.data.token);
         navigate("/");
       });
     } catch (error) {
-      toast.error(error);
+      toast.error(error.response.data.message);
     }
   };
   if (loading) return <Spinner />;
